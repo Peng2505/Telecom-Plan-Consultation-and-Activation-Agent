@@ -1,6 +1,5 @@
 流量包推荐 Agent — 启动步骤
 项目目录：D:\data-plan-langgraph-agent
-Python 环境：Anaconda 的 langgraph（不要用 conda activate，本机 PowerShell 会报错）
 网页地址：http://127.0.0.1:7860
 接口地址：http://127.0.0.1:8012
 
