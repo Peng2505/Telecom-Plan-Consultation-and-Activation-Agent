@@ -1,13 +1,37 @@
 # 流量包推荐 LangGraph Agent
 
 GitHub: https://github.com/Peng2505/AI-agent
+## 这个项目做什么
+
+这是一个**流量套餐推荐 Agent**（个人实践 / 开源项目二次开发）。
+
+用户可以用自然语言咨询套餐、按是否学生和月用量做推荐、试算超套费用，并走「二次确认 → 待办工单 → 模拟业支受理/查进度」。  
+数字以价表和工具 JSON 为准，避免模型口算；办理**不会真正开通或扣费**，开通结果以模拟业支回执为准。
+技术上用 LangGraph 做工具路由和 RAG（Chroma），PostgreSQL 做会话记忆，FastAPI + Gradio 提供对话界面。
 
 
-基于开源教程 [LangGraphChatBot](https://github.com/NanGePlus) 第四期 **二次开发**：业务改为流量套餐推荐，模型改为通义千问（环境变量），并补上健康检查、业务对话接口与关键字评测。
+基于开源项目 [LangGraphChatBot](https://github.com/NanGePlus) 第四期 **二次开发**：业务改为流量套餐推荐，模型改为通义千问（环境变量），并补上健康检查、业务对话接口与关键字评测。知识检索走 **Chroma**（不是 pgvector）；PostgreSQL 只做会话检查点与长期记忆。
 
-知识检索走 **Chroma**（不是 pgvector）；PostgreSQL 只做会话检查点与长期记忆。
+##技术栈
+Python · LangGraph · LangChain · 通义千问 · Chroma · PostgreSQL · FastAPI · Gradio · Docker · LangSmith
 
-## 架构（三句话）
+| 分层 | 技术 |
+|------|------|
+| 语言 | Python 3 |
+| Agent 编排 | LangGraph（StateGraph：agent / 工具 / 文档评分 / Query Rewrite / 生成） |
+| LLM 与 Embedding | 阿里云通义千问（DashScope OpenAI 兼容接口），Key 走环境变量 |
+| RAG | Chroma（本地向量库，知识为套餐 Markdown） |
+| 业务工具 | 权威价表、套餐推荐、超套试算、待办工单、模拟业支查单（LangChain Tool） |
+| 记忆 | PostgreSQL：`PostgresSaver` 会话检查点 + `PostgresStore` 跨会话记忆；消息裁剪 |
+| 接口 | FastAPI（`/v1/chat`、OpenAI 兼容协议、`/health`、`/v1/orders`、`/v1/bss`） |
+| 前端 | Gradio（登录、多会话聊天） |
+| 可观测 | 可选 LangSmith；回复带工具名与 rewrite_count |
+| 评测 | 单轮 / 多轮关键字回归（`eval/`） |
+| 运行环境 | Docker Compose 启动 PostgreSQL（镜像 `pgvector/pgvector:pg15`，用于 Store 扩展；**RAG 不用 pgvector**） |
+
+依赖见 `requirements.txt`。配置模板见 `.env.example`。
+
+## 架构
 
 用户问题进入 `agent`，需要时调用工具。工具名含 `retrieve` 的会先 `grade_documents`，不相关则 `rewrite`（最多 3 次）；业务工具直接进入 `generate`。会话状态中持久化学生身份、月用量、目标套餐与待确认状态；办理采用“二次确认 → 本地待办工单 → 模拟业支受理”。开通结果以模拟业支 JSON 为准（第一次查询多为 provisioning，第二次查询变为 success），**不是**生产运营商 BOSS。
 
