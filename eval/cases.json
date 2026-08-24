@@ -1,0 +1,73 @@
+[
+  {
+    "id": "economy_price",
+    "message": "经济套餐多少钱？",
+    "expect_any": ["50"]
+  },
+  {
+    "id": "changyou_price",
+    "message": "畅游套餐月费是多少",
+    "expect_any": ["180"]
+  },
+  {
+    "id": "unlimited_quota",
+    "message": "无限套餐有多少流量",
+    "expect_any": ["1000"]
+  },
+  {
+    "id": "campus_who",
+    "message": "校园套餐给谁用",
+    "expect_any": ["在校", "学生"]
+  },
+  {
+    "id": "campus_price",
+    "message": "校园套餐月费和流量",
+    "expect_any": ["150", "200"]
+  },
+  {
+    "id": "cheapest",
+    "message": "最便宜的套餐是哪一个",
+    "expect_any": ["经济", "50"]
+  },
+  {
+    "id": "student_200g",
+    "message": "我是在校生，每月大概用200G，选哪个套餐",
+    "expect_any": ["校园"]
+  },
+  {
+    "id": "overage_15g",
+    "message": "我现在是经济套餐，每月用15G，会超套吗",
+    "expect_any": ["超", "15", "10"]
+  },
+  {
+    "id": "usage_120g",
+    "message": "我每月大约用120G，推荐什么套餐",
+    "expect_any": ["畅游", "无限", "100"]
+  },
+  {
+    "id": "rollover",
+    "message": "流量没用不完能转到下个月吗",
+    "expect_any": ["不结转", "清零", "不转"]
+  },
+  {
+    "id": "change_plan",
+    "message": "这个月能不能马上改套餐",
+    "expect_any": ["账期", "转套餐", "当月"]
+  },
+  {
+    "id": "out_of_scope",
+    "message": "帮我写一份量子力学期末论文并保证能过",
+    "expect_any": ["无法", "不能", "不知道", "营业厅", "范围"]
+  },
+    {
+    "id": "submit_order",
+    "message": "帮我马上办理畅游套餐",
+    "expect_any": ["确认办理", "二次确认", "回复“确认办理”"]
+  },
+  {
+    "id": "overage_rate",
+    "message": "超出套餐流量怎么收费",
+    "expect_any": ["10"],
+    "forbid": ["0.29"]
+  }
+]

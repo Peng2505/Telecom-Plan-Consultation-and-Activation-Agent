@@ -1,0 +1,132 @@
+流量包推荐 Agent — 启动步骤
+项目目录：D:\data-plan-langgraph-agent
+Python 环境：Anaconda 的 langgraph（不要用 conda activate，本机 PowerShell 会报错）
+网页地址：http://127.0.0.1:7860
+接口地址：http://127.0.0.1:8012
+
+==================================================
+一、每次开机前准备
+==================================================
+
+1. 打开 Docker Desktop，等到左下角显示 Engine running（绿色）。
+
+2. 打开 Cursor / PowerShell 终端。不要执行 conda activate langgraph。
+
+3. 进入项目目录：
+
+cd D:\data-plan-langgraph-agent
+
+4. 确认 .env 里已填写通义 Key（只改这一行，其它保持默认即可）：
+
+DASHSCOPE_API_KEY=你的真实Key
+
+APP_API_KEY 先留空。
+DB_URI 不要改成 Key。
+
+
+==================================================
+二、按顺序启动（需要 2 个终端）
+==================================================
+
+【终端 1】数据库 + 接口（这个窗口不要关）
+
+cd D:\data-plan-langgraph-agent
+
+docker compose up -d
+
+D:\Anaconda\envs\langgraph\python.exe vectorSaveTest.py
+
+说明：知识库已经灌过的话，可以跳过 vectorSaveTest.py。
+改过 knowledge/data_plans.md 之后必须再跑一次灌库。
+
+D:\Anaconda\envs\langgraph\python.exe main.py
+
+看到类似下面这行表示接口成功：
+Uvicorn running on http://0.0.0.0:8012
+
+可用浏览器或另开终端检查：
+http://127.0.0.1:8012/health
+
+
+【终端 2】网页（这个窗口也不要关）
+
+cd D:\data-plan-langgraph-agent
+
+D:\Anaconda\envs\langgraph\python.exe webUI.py
+
+看到 Running on local URL: http://127.0.0.1:7860
+用浏览器打开该地址，注册/登录后即可聊天。
+
+可试：畅游套餐月费多少？
+
+
+==================================================
+三、可选：评测（接口必须已在 8012 运行）
+==================================================
+
+再开一个终端：
+
+cd D:\data-plan-langgraph-agent
+D:\Anaconda\envs\langgraph\python.exe eval\run_eval.py
+D:\Anaconda\envs\langgraph\python.exe eval\run_conversation_eval.py
+
+单轮结果保存在 eval\last_result.json。
+多轮画像、二次确认、工单幂等和模拟业支查单结果保存在 eval\last_conversation_result.json。
+
+模拟业支 curl（main.py 已启动时，同进程接口）：
+
+curl -s -X POST http://127.0.0.1:8012/v1/bss/provision -H "Content-Type: application/json" -d "{\"plan_name\":\"畅游套餐\",\"user_id\":\"demo\",\"campus_student\":false}"
+
+记下返回的 ticket_id，再 GET 两次（第二次才 success）：
+
+curl -s http://127.0.0.1:8012/v1/bss/tickets/这里换成ticket_id
+
+
+
+==================================================
+四、修改代码后怎么重启
+==================================================
+
+- 只改了网页 webUI.py：终端 2 按 Ctrl+C，再执行 webUI.py。main.py 不用关。
+- 改了提示词、工具、demoRagAgent.py、main.py：终端 1 按 Ctrl+C 停掉 main.py，再执行 main.py。
+- 改了 knowledge/data_plans.md：先跑 vectorSaveTest.py，再重启 main.py。
+
+
+==================================================
+五、停止
+==================================================
+
+1. 跑 webUI.py 的窗口：Ctrl+C
+2. 跑 main.py 的窗口：Ctrl+C
+3. 需要关掉数据库时（一般不用每次关）：
+
+cd D:\data-plan-langgraph-agent
+docker compose down
+
+
+==================================================
+六、曾经踩过的坑（对照用）
+==================================================
+
+- PowerShell 里 conda activate langgraph 会报 invalid choice: activate
+  解决：用 D:\Anaconda\envs\langgraph\python.exe 启动脚本。
+
+- docker compose 报连不上 dockerDesktopLinuxEngine
+  解决：先打开 Docker Desktop 等到 Engine running。
+
+- 缺 psycopg2
+  解决：D:\Anaconda\envs\langgraph\python.exe -m pip install psycopg2-binary
+
+- Postgres 报 extension vector is not available
+  解决：docker-compose.yml 使用镜像 pgvector/pgvector:pg15，然后：
+  docker compose down
+  docker compose up -d
+
+- 网页报 messages format / Chatbot type
+  解决：已改过 webUI.py，用当前仓库版本即可。
+
+- 聊天没有回复，日志 gbk codec
+  解决：提示词已改为 UTF-8 读取，需重启 main.py。
+
+- 模型说「办理成功」
+  确认办理后也只是待办 + 模拟业支受理。只有 query_ticket 第二次才可能沙箱 success，不是生产开通。提示词已约束，需重启 main.py。
