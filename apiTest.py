@@ -2,27 +2,16 @@ import requests
 import json
 import logging
 
-
-
-# Author:@南哥AGI研习社 (B站 or YouTube 搜索“南哥AGI研习社”)
-
-
-# 设置日志模版
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
 
 url = "http://localhost:8012/v1/chat/completions"
 headers = {"Content-Type": "application/json"}
 
-
 # 默认非流式输出 True or False
 stream_flag = True
 
-
 input_text = "畅游套餐月费多少"
-
-
 
 # 封装请求的参数
 data = {
