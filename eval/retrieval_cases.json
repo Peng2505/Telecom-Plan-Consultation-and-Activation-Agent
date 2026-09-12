@@ -2,91 +2,230 @@
   {
     "id": "campus_who",
     "query": "校园套餐给谁用",
-    "relevant_ids": ["campus_plan"]
-  },
-  {
-    "id": "campus_need_student_card",
-    "query": "办理校园套餐需要什么证明",
-    "relevant_ids": ["campus_plan", "campus_verify"]
+    "relevant_ids": [
+      "campus_eligibility"
+    ]
   },
   {
     "id": "overage_how",
     "query": "超出套餐流量怎么收费",
-    "relevant_ids": ["overage_rule"]
-  },
-  {
-    "id": "overage_cap",
-    "query": "超套费用有没有封顶",
-    "relevant_ids": ["overage_rule"]
+    "relevant_ids": [
+      "overage_billing"
+    ]
   },
   {
     "id": "rollover",
     "query": "流量没用完能转到下个月吗",
-    "relevant_ids": ["rollover_rule"]
+    "relevant_ids": [
+      "rollover_no_carry"
+    ]
   },
   {
     "id": "change_plan_when",
     "query": "这个月能不能马上改套餐",
-    "relevant_ids": ["change_plan_rule"]
+    "relevant_ids": [
+      "change_plan_timing"
+    ]
   },
   {
     "id": "campus_verify",
     "query": "校园套餐怎么做学生认证",
-    "relevant_ids": ["campus_verify", "campus_plan"]
-  },
-  {
-    "id": "graduate_auto",
-    "query": "毕业后校园套餐会怎样",
-    "relevant_ids": ["campus_verify", "change_plan_rule"]
+    "relevant_ids": [
+      "campus_verify_docs",
+      "campus_eligibility"
+    ]
   },
   {
     "id": "multi_sim",
     "query": "副卡有没有独立套餐价",
-    "relevant_ids": ["multi_sim"]
+    "relevant_ids": [
+      "multi_sim_share_no_independent_price"
+    ]
   },
   {
     "id": "night_boost",
     "query": "夜间会不会额外送流量",
-    "relevant_ids": ["night_boost"]
+    "relevant_ids": [
+      "night_no_bonus"
+    ]
   },
   {
     "id": "support_boundary",
     "query": "内部员工套餐有没有折扣",
-    "relevant_ids": ["support_boundary"]
-  },
-  {
-    "id": "economy_intro",
-    "query": "经济套餐适合什么人",
-    "relevant_ids": ["economy_plan"]
-  },
-  {
-    "id": "changyou_intro",
-    "query": "畅游套餐包含多少流量",
-    "relevant_ids": ["changyou_plan"]
+    "relevant_ids": [
+      "support_refuse_employee_plan"
+    ]
   },
   {
     "id": "unlimited_meaning",
     "query": "无限套餐是不是绝对不限量",
-    "relevant_ids": ["unlimited_plan"]
+    "relevant_ids": [
+      "unlimited_meaning"
+    ]
   },
   {
-    "id": "non_student_campus",
-    "query": "非在校生能不能办校园套餐",
-    "relevant_ids": ["campus_plan"]
+    "id": "oral_student_50g",
+    "query": "我学生卡，一个月刷50个G够不够用？",
+    "relevant_ids": [
+      "campus_fee_quota"
+    ]
   },
   {
-    "id": "prefer_upgrade",
-    "query": "长期超套应该怎么办",
-    "relevant_ids": ["overage_rule"]
+    "id": "oral_overage_cap",
+    "query": "流量超了按啥收费啊，封顶没有",
+    "relevant_ids": [
+      "overage_billing"
+    ]
   },
   {
-    "id": "no_undocumented_discount",
+    "id": "oral_night_free",
+    "query": "晚上有没有白嫖流量",
+    "relevant_ids": [
+      "night_no_bonus"
+    ]
+  },
+  {
+    "id": "oral_rollover",
+    "query": "剩的流量下个月还能接着用吗",
+    "relevant_ids": [
+      "rollover_no_carry"
+    ]
+  },
+  {
+    "id": "oral_sim_cheap",
+    "query": "副卡能不能单独办个五十块的",
+    "relevant_ids": [
+      "multi_sim_share_no_independent_price"
+    ]
+  },
+  {
+    "id": "oral_switch_named",
+    "query": "这个月能不能把经济换成畅游",
+    "relevant_ids": [
+      "change_plan_timing"
+    ]
+  },
+  {
+    "id": "oral_switch_named2",
+    "query": "经济套餐换成畅游套餐，当月能立刻改吗",
+    "relevant_ids": [
+      "change_plan_timing"
+    ]
+  },
+  {
+    "id": "cross_grad_fee",
+    "query": "毕业了校园套餐还能不能用，月费变多少",
+    "relevant_ids": [
+      "campus_graduate_convert",
+      "changyou_fee_quota"
+    ]
+  },
+  {
+    "id": "cross_switch_overage",
+    "query": "这个月从经济改畅游行不行，不行的话超套怎么收",
+    "relevant_ids": [
+      "change_plan_timing",
+      "overage_billing"
+    ]
+  },
+  {
+    "id": "cross_student_overage",
+    "query": "学生卡刷50G，校园那个200G够不够，超了咋办",
+    "relevant_ids": [
+      "campus_fee_quota",
+      "overage_billing"
+    ]
+  },
+  {
+    "id": "distract_changxue",
+    "query": "校园畅学套餐和校园套餐是不是一个东西",
+    "relevant_ids": [
+      "alias_reject_campus_changxue",
+      "campus_fee_quota",
+      "official_plan_names"
+    ]
+  },
+  {
+    "id": "distract_youxiang",
+    "query": "畅享套餐和畅游套餐哪个贵",
+    "relevant_ids": [
+      "alias_reject_changxiang",
+      "changyou_fee_quota"
+    ]
+  },
+  {
+    "id": "refuse_portability",
+    "query": "携号转网能赔多少钱",
+    "relevant_ids": [
+      "support_refuse_mnp"
+    ]
+  },
+  {
+    "id": "refuse_undoc_discount",
     "query": "有没有未公示的亲情号折扣",
-    "relevant_ids": ["multi_sim", "support_boundary"]
+    "relevant_ids": [
+      "multi_sim_no_undoc_family_discount",
+      "support_refuse_undoc_discount"
+    ]
   },
   {
-    "id": "billing_cycle",
-    "query": "流量是按自然月计费吗",
-    "relevant_ids": ["rollover_rule"]
+    "id": "nonstudent_200g",
+    "query": "我没学生证能办那个200G的吗",
+    "relevant_ids": [
+      "campus_eligibility"
+    ]
+  },
+  {
+    "id": "billing_oral",
+    "query": "算账是按自然月还是按30天",
+    "relevant_ids": [
+      "billing_cycle_natural_month"
+    ]
+  },
+  {
+    "id": "long_overage_oral",
+    "query": "老是超量是不是该换大一点的套餐",
+    "relevant_ids": [
+      "overage_prefer_upgrade",
+      "overage_billing"
+    ]
+  },
+  {
+    "id": "oral_switch_named3",
+    "query": "五十块那个换成一百八，这个月能改吗",
+    "relevant_ids": [
+      "change_plan_timing"
+    ]
+  },
+  {
+    "id": "oral_switch_named4",
+    "query": "想把经济套餐马上换成畅游行不行",
+    "relevant_ids": [
+      "change_plan_timing"
+    ]
+  },
+  {
+    "id": "cross_grad_sms_fee",
+    "query": "毕业了会不会短信通知转畅游，畅游月费多少",
+    "relevant_ids": [
+      "campus_graduate_convert",
+      "changyou_fee_quota"
+    ]
+  },
+  {
+    "id": "cross_verify_campus_fee",
+    "query": "学信网认证通过后校园套餐多少钱",
+    "relevant_ids": [
+      "campus_verify_docs",
+      "campus_fee_quota"
+    ]
+  },
+  {
+    "id": "cross_switch_rollover",
+    "query": "账期没到能改套餐吗，剩的流量下个月还在吗",
+    "relevant_ids": [
+      "change_plan_timing",
+      "rollover_no_carry"
+    ]
   }
 ]

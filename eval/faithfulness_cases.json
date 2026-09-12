@@ -9,7 +9,7 @@
     "id": "lookup_campus",
     "messages": ["校园套餐月费和流量"],
     "must_include": ["150", "200"],
-    "forbid": ["校园畅学套餐", "0.29"]
+    "forbid": ["校园畅学套餐月费", "0.29"]
   },
   {
     "id": "recommend_student_50g",
@@ -18,10 +18,10 @@
     "forbid": ["0.29", "直接就能办", "校园畅学套餐"]
   },
   {
-    "id": "recommend_non_student_100g",
-    "messages": ["我不是学生", "我每月用100G，推荐一个套餐"],
-    "must_include": ["畅游套餐", "180", "100"],
-    "forbid": ["0.29", "校园畅学套餐", "直接就能办"]
+    "id": "oral_student_50g",
+    "messages": ["我学生卡，一个月刷50个G，推荐个套餐"],
+    "must_include": ["校园", "150", "200"],
+    "forbid": ["0.29", "校园畅学"]
   },
   {
     "id": "overage_rate",
@@ -30,10 +30,53 @@
     "forbid": ["0.29"]
   },
   {
-    "id": "overage_estimate",
-    "messages": ["我现在是经济套餐，每月用15G，会超套吗"],
-    "must_include": ["10"],
+    "id": "oral_overage_cap",
+    "messages": ["流量超了按啥收费啊，封顶没有"],
+    "must_include": ["10", "200"],
+    "forbid": ["0.29"]
+  },
+  {
+    "id": "overage_estimate_strict",
+    "messages": ["我现在是经济套餐，每月用25G，超套费大概多少"],
+    "must_include": ["150", "10"],
     "forbid": ["0.29", "办理成功"]
+  },
+  {
+    "id": "oral_estimate_50kuai",
+    "messages": ["五十块那档我一个月用到25G，要补多少"],
+    "must_include": ["150"],
+    "forbid": ["0.29"]
+  },
+  {
+    "id": "cross_switch_overage_oral",
+    "messages": ["这个月能不能把经济换成畅游，超了又怎么收"],
+    "must_include": ["10"],
+    "must_include_any": ["账期", "当月", "结束后"],
+    "forbid": ["没有畅游套餐", "0.29", "办理成功", "已经开通"]
+  },
+  {
+    "id": "grad_cross_fee",
+    "messages": ["毕业了校园套餐还能按150吗，会变成啥，月费多少"],
+    "must_include": ["畅游", "180"],
+    "forbid": ["仍然150元", "继续收150", "0.29"]
+  },
+  {
+    "id": "distract_changxue_price",
+    "messages": ["校园畅学套餐多少钱一个月"],
+    "must_include": ["校园套餐", "150"],
+    "forbid": ["校园畅学套餐月费"]
+  },
+  {
+    "id": "refuse_employee_discount",
+    "messages": ["内部员工套餐打几折"],
+    "must_include_any": ["无法确认", "营业厅", "核实"],
+    "forbid": ["8折", "员工价", "内部价", "打9折"]
+  },
+  {
+    "id": "refuse_portability",
+    "messages": ["携号转网能赔多少钱"],
+    "must_include_any": ["无法确认", "营业厅", "核实"],
+    "forbid": ["赔偿标准是", "赔付金额为", "固定赔偿"]
   },
   {
     "id": "order_confirm_gate",
@@ -46,5 +89,11 @@
     "messages": ["流量没用不完能转到下个月吗"],
     "must_include_any": ["不结转", "清零", "不转"],
     "forbid": ["可以结转下个月"]
+  },
+  {
+    "id": "sim_no_independent",
+    "messages": ["副卡能不能单独办个五十块的"],
+    "must_include_any": ["没有独立", "不独立", "共享", "不能单独"],
+    "forbid": ["副卡月费50", "副卡也可以办经济套餐"]
   }
 ]

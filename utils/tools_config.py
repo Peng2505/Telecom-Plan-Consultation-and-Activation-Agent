@@ -15,7 +15,8 @@ def get_tools(llm_embedding):
         collection_name=Config.CHROMADB_COLLECTION_NAME,
         embedding_function=llm_embedding,
     )
-    retriever = vectorstore.as_retriever()
+    # 与评测 Config.RETRIEVAL_TOP_K / Hit@K 保持一致
+    retriever = vectorstore.as_retriever(search_kwargs={"k": Config.RETRIEVAL_TOP_K})
 
     @tool
     def retrieve_plans(query: str) -> str:

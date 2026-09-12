@@ -15,9 +15,12 @@ class Config:
     PROMPT_TEMPLATE_TXT_REWRITE = "prompts/prompt_template_rewrite.txt"
     PROMPT_TEMPLATE_TXT_GENERATE = "prompts/prompt_template_generate.txt"
 
-    KNOWLEDGE_MD = os.getenv("KNOWLEDGE_MD", "knowledge/data_plans.md")
+    KNOWLEDGE_MD = os.getenv("KNOWLEDGE_MD", "knowledge/data_plans_v2.md")
     CHROMADB_DIRECTORY = os.getenv("CHROMADB_DIRECTORY", "chromaDB")
-    CHROMADB_COLLECTION_NAME = os.getenv("CHROMADB_COLLECTION_NAME", "data_plans")
+    # 线上默认细粒度集合；旧粗库 data_plans 可回滚
+    CHROMADB_COLLECTION_NAME = os.getenv("CHROMADB_COLLECTION_NAME", "policy_v2")
+    # 线上 retrieve_plans 与检索评测共用；默认 4（对齐 LangChain as_retriever 默认）
+    RETRIEVAL_TOP_K = int(os.getenv("RETRIEVAL_TOP_K", "4"))
 
     LOG_FILE = "output/app.log"
     MAX_BYTES = 5 * 1024 * 1024

@@ -1,5 +1,6 @@
 流量包推荐 Agent — 启动步骤
-项目目录：D:\data-plan-langgraph-agent
+项目目录：D:\LangGraphChatBot-main\04_RagAgent
+Python 环境：Anaconda 的 langgraph（不要用 conda activate，本机 PowerShell 会报错）
 网页地址：http://127.0.0.1:7860
 接口地址：http://127.0.0.1:8012
 
@@ -13,7 +14,7 @@
 
 3. 进入项目目录：
 
-cd D:\data-plan-langgraph-agent
+cd D:\LangGraphChatBot-main\04_RagAgent
 
 4. 确认 .env 里已填写通义 Key（只改这一行，其它保持默认即可）：
 
@@ -29,7 +30,7 @@ DB_URI 不要改成 Key。
 
 【终端 1】数据库 + 接口（这个窗口不要关）
 
-cd D:\data-plan-langgraph-agent
+cd D:\LangGraphChatBot-main\04_RagAgent
 
 docker compose up -d
 
@@ -49,7 +50,7 @@ http://127.0.0.1:8012/health
 
 【终端 2】网页（这个窗口也不要关）
 
-cd D:\data-plan-langgraph-agent
+cd D:\LangGraphChatBot-main\04_RagAgent
 
 D:\Anaconda\envs\langgraph\python.exe webUI.py
 
@@ -65,7 +66,7 @@ D:\Anaconda\envs\langgraph\python.exe webUI.py
 
 再开一个终端：
 
-cd D:\data-plan-langgraph-agent
+cd D:\LangGraphChatBot-main\04_RagAgent
 
 知识库改过或首次启用稳定 chunk id 后，先重建向量库：
 
@@ -80,7 +81,7 @@ D:\Anaconda\envs\langgraph\python.exe eval\run_retrieval_eval.py
 D:\Anaconda\envs\langgraph\python.exe eval\run_all.py --label baseline
 
 产物：
-- eval\last_retrieval_result.json（Hit@K / MRR）
+- eval\last_retrieval_result.json（Hit@4 / MRR；与线上 RETRIEVAL_TOP_K=4 一致）
 - eval\last_faithfulness_result.json（字段命中率 / 数字幻觉率）
 - eval\last_result.json（单轮）
 - eval\last_conversation_result.json（多轮）
@@ -115,7 +116,7 @@ curl -s http://127.0.0.1:8012/v1/bss/tickets/这里换成ticket_id
 2. 跑 main.py 的窗口：Ctrl+C
 3. 需要关掉数据库时（一般不用每次关）：
 
-cd D:\data-plan-langgraph-agent
+cd D:\LangGraphChatBot-main\04_RagAgent
 docker compose down
 
 

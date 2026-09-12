@@ -1,0 +1,130 @@
+[
+  {
+    "id": "holdout_switch_midcycle",
+    "query": "账期内想从低价套餐升到畅游，现在能办变更吗",
+    "relevant_ids": ["change_plan_timing"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_switch"
+  },
+  {
+    "id": "holdout_switch_immediate",
+    "query": "我能不能现在就把经济档改成畅游档",
+    "relevant_ids": ["change_plan_timing"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_switch"
+  },
+  {
+    "id": "holdout_grad_price",
+    "query": "学生身份没了之后校园价还在吗，承接套餐收费标准",
+    "relevant_ids": ["campus_graduate_convert", "changyou_fee_quota"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_grad"
+  },
+  {
+    "id": "holdout_grad_auto",
+    "query": "学籍结束以后系统会不会自动换档，换过去一个月多少钱",
+    "relevant_ids": ["campus_graduate_convert", "changyou_fee_quota"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_grad"
+  },
+  {
+    "id": "holdout_night_share",
+    "query": "凌晨会不会单独给副卡加流量",
+    "relevant_ids": ["night_no_bonus"],
+    "split": "holdout",
+    "kind": "new",
+    "error_class": "new_topic"
+  },
+  {
+    "id": "holdout_cap_only",
+    "query": "超量扣费有没有上限，大概封顶多少",
+    "relevant_ids": ["overage_billing"],
+    "split": "holdout",
+    "kind": "new",
+    "error_class": "new_topic"
+  },
+  {
+    "id": "holdout_distract_xueyuan",
+    "query": "校园畅学卡和校园套餐月费一样吗",
+    "relevant_ids": ["alias_reject_campus_changxue", "campus_fee_quota", "official_plan_names"],
+    "split": "holdout",
+    "kind": "distract",
+    "error_class": "distract"
+  },
+  {
+    "id": "holdout_distract_boundary",
+    "query": "员工内购价和号码携转补偿分别怎么查",
+    "relevant_ids": ["support_refuse_employee_plan", "support_refuse_mnp"],
+    "split": "holdout",
+    "kind": "distract",
+    "error_class": "distract"
+  },
+  {
+    "id": "holdout_switch_cycle",
+    "query": "低档换高档要不要等到下个计费周期",
+    "relevant_ids": ["change_plan_timing"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_switch"
+  },
+  {
+    "id": "holdout_switch_oral2",
+    "query": "经济那档换成畅游那档，眼下能生效不",
+    "relevant_ids": ["change_plan_timing"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_switch"
+  },
+  {
+    "id": "holdout_grad_fee2",
+    "query": "不念书了校园优惠还在不在，后面按哪个价收",
+    "relevant_ids": ["campus_graduate_convert", "changyou_fee_quota"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_grad"
+  },
+  {
+    "id": "holdout_cross_ov_sw",
+    "query": "想换大套餐，顺便问超了按啥规矩收",
+    "relevant_ids": ["change_plan_timing", "overage_billing"],
+    "split": "holdout",
+    "kind": "paraphrase",
+    "error_class": "same_class_cross"
+  },
+  {
+    "id": "holdout_rollover_new",
+    "query": "没用完的G能攒到下个自然月吗",
+    "relevant_ids": ["rollover_no_carry"],
+    "split": "holdout",
+    "kind": "new",
+    "error_class": "new_topic"
+  },
+  {
+    "id": "holdout_multi_new",
+    "query": "副号能不能自己选一个独立月租套餐",
+    "relevant_ids": ["multi_sim_share_no_independent_price"],
+    "split": "holdout",
+    "kind": "new",
+    "error_class": "new_topic"
+  },
+  {
+    "id": "holdout_distract_changxiang2",
+    "query": "畅享流量包是不是就是畅游",
+    "relevant_ids": ["alias_reject_changxiang", "changyou_fee_quota"],
+    "split": "holdout",
+    "kind": "distract",
+    "error_class": "distract"
+  },
+  {
+    "id": "holdout_refuse_undoc",
+    "query": "有没有不公开的折扣码可以用",
+    "relevant_ids": ["support_refuse_undoc_discount"],
+    "split": "holdout",
+    "kind": "new",
+    "error_class": "new_topic"
+  }
+]
