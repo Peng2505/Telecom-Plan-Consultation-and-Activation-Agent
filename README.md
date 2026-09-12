@@ -35,21 +35,17 @@ Python · LangGraph · LangChain · 通义千问 · Chroma · PostgreSQL · Fast
 
 用户问题进入 `agent`，需要时调用工具。工具名含 `retrieve` 的会先 `grade_documents`，不相关则 `rewrite`（最多 3 次）；业务工具直接进入 `generate`。会话状态中持久化学生身份、月用量、目标套餐与待确认状态；办理采用“二次确认 → 本地待办工单 → 模拟业支受理”。开通结果以模拟业支 JSON 为准（第一次查询多为 provisioning，第二次查询变为 success），**不是**生产运营商 BOSS。
 
-## 声明
-
-本仓库是个人二次开发结果，**不是**运营商生产系统，**没有**对接真实业支。适合作为 Agent / AI 应用实习作品集。请勿将 `.env` 中的真实 Key 提交到 Git。
-
-克隆后在本目录执行命令（把 `python` 换成你的解释器，例如 `D:\Anaconda\envs\langgraph\python.exe`）：
+## 环境：请用 Anaconda 的 `langgraph`
 
 ```bat
 cd /d D:\data-plan-langgraph-agent
-python main.py
+D:\Anaconda\envs\langgraph\python.exe main.py
 ```
 
-依赖若缺失：
+本目录新依赖若缺失，仍装进该环境：
 
 ```bat
-python -m pip install -r requirements.txt
+python -m pip install python-dotenv
 ```
 
 其它包（langgraph / fastapi / langchain-openai / chromadb / psycopg 等）以你现有 `langgraph` 环境为准。
@@ -104,14 +100,21 @@ python webUI.py
 
 若设置了 `APP_API_KEY`，Gradio 会自动带 `Authorization: Bearer ...`。
 
-6. 评测（API 已启动）：
+6. 评测（分层）：
 
 ```bat
-python eval/run_eval.py
-python eval/run_conversation_eval.py
+python eval/run_retrieval_eval.py
+python eval/run_all.py --label baseline
 ```
 
-当前结果：单轮用例以 `eval/run_eval.py` 为准；多轮含画像/确认/幂等/业支查单。结果分别写入 `eval/last_result.json` 与 `eval/last_conversation_result.json`。
+- 检索层（不需 API）：Hit Rate@K、MRR → `eval/last_retrieval_result.json`
+- 忠实度层（需 API）：字段命中率、数字幻觉率 → `eval/last_faithfulness_result.json`
+- 端到端：单轮 `eval/run_eval.py`、多轮 `eval/run_conversation_eval.py`
+- 改进闭环说明：`eval/IMPROVEMENT_LOOP.md`（baseline → 定位 → 单点修改 → 重跑对比）
+
+知识库变更后必须先 `python vectorSaveTest.py` 重建 Chroma（稳定 chunk id）。
+
+当前结果以本地最近一次 `eval/last_eval_summary.json` 为准。样本规模较小，Hit Rate 可能偏高，适合做回归与改进归因，不是大规模榜单。
 
 可选 LangSmith：在 `.env` 填写 `LANGCHAIN_API_KEY` 后重启 `main.py`，到 smith.langchain.com 查看 Trace。
 

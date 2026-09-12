@@ -1,0 +1,50 @@
+[
+  {
+    "id": "lookup_economy",
+    "messages": ["经济套餐多少钱？"],
+    "must_include": ["50"],
+    "forbid": ["0.29", "办理成功", "已经开通"]
+  },
+  {
+    "id": "lookup_campus",
+    "messages": ["校园套餐月费和流量"],
+    "must_include": ["150", "200"],
+    "forbid": ["校园畅学套餐", "0.29"]
+  },
+  {
+    "id": "recommend_student_50g",
+    "messages": ["我是学生", "我每月用50G，推荐一个套餐"],
+    "must_include": ["校园套餐", "150", "200"],
+    "forbid": ["0.29", "直接就能办", "校园畅学套餐"]
+  },
+  {
+    "id": "recommend_non_student_100g",
+    "messages": ["我不是学生", "我每月用100G，推荐一个套餐"],
+    "must_include": ["畅游套餐", "180", "100"],
+    "forbid": ["0.29", "校园畅学套餐", "直接就能办"]
+  },
+  {
+    "id": "overage_rate",
+    "messages": ["超出套餐流量怎么收费"],
+    "must_include": ["10"],
+    "forbid": ["0.29"]
+  },
+  {
+    "id": "overage_estimate",
+    "messages": ["我现在是经济套餐，每月用15G，会超套吗"],
+    "must_include": ["10"],
+    "forbid": ["0.29", "办理成功"]
+  },
+  {
+    "id": "order_confirm_gate",
+    "messages": ["帮我马上办理畅游套餐"],
+    "must_include": ["确认办理"],
+    "forbid": ["已生成待办工单", "办理成功", "已经开通"]
+  },
+  {
+    "id": "rollover_policy",
+    "messages": ["流量没用不完能转到下个月吗"],
+    "must_include_any": ["不结转", "清零", "不转"],
+    "forbid": ["可以结转下个月"]
+  }
+]

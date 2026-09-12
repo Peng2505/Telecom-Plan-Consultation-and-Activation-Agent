@@ -60,17 +60,33 @@ D:\Anaconda\envs\langgraph\python.exe webUI.py
 
 
 ==================================================
-三、可选：评测（接口必须已在 8012 运行）
+三、可选：评测
 ==================================================
 
 再开一个终端：
 
 cd D:\data-plan-langgraph-agent
-D:\Anaconda\envs\langgraph\python.exe eval\run_eval.py
-D:\Anaconda\envs\langgraph\python.exe eval\run_conversation_eval.py
 
-单轮结果保存在 eval\last_result.json。
-多轮画像、二次确认、工单幂等和模拟业支查单结果保存在 eval\last_conversation_result.json。
+知识库改过或首次启用稳定 chunk id 后，先重建向量库：
+
+D:\Anaconda\envs\langgraph\python.exe vectorSaveTest.py
+
+只测检索（不需要 API）：
+
+D:\Anaconda\envs\langgraph\python.exe eval\run_retrieval_eval.py
+
+完整分层（接口必须已在 8012 运行）：
+
+D:\Anaconda\envs\langgraph\python.exe eval\run_all.py --label baseline
+
+产物：
+- eval\last_retrieval_result.json（Hit@K / MRR）
+- eval\last_faithfulness_result.json（字段命中率 / 数字幻觉率）
+- eval\last_result.json（单轮）
+- eval\last_conversation_result.json（多轮）
+- eval\last_eval_summary_baseline.json（汇总）
+
+改进闭环说明见 eval\IMPROVEMENT_LOOP.md。
 
 模拟业支 curl（main.py 已启动时，同进程接口）：
 

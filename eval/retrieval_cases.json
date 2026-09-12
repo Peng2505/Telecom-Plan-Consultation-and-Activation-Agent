@@ -1,0 +1,92 @@
+[
+  {
+    "id": "campus_who",
+    "query": "校园套餐给谁用",
+    "relevant_ids": ["campus_plan"]
+  },
+  {
+    "id": "campus_need_student_card",
+    "query": "办理校园套餐需要什么证明",
+    "relevant_ids": ["campus_plan", "campus_verify"]
+  },
+  {
+    "id": "overage_how",
+    "query": "超出套餐流量怎么收费",
+    "relevant_ids": ["overage_rule"]
+  },
+  {
+    "id": "overage_cap",
+    "query": "超套费用有没有封顶",
+    "relevant_ids": ["overage_rule"]
+  },
+  {
+    "id": "rollover",
+    "query": "流量没用完能转到下个月吗",
+    "relevant_ids": ["rollover_rule"]
+  },
+  {
+    "id": "change_plan_when",
+    "query": "这个月能不能马上改套餐",
+    "relevant_ids": ["change_plan_rule"]
+  },
+  {
+    "id": "campus_verify",
+    "query": "校园套餐怎么做学生认证",
+    "relevant_ids": ["campus_verify", "campus_plan"]
+  },
+  {
+    "id": "graduate_auto",
+    "query": "毕业后校园套餐会怎样",
+    "relevant_ids": ["campus_verify", "change_plan_rule"]
+  },
+  {
+    "id": "multi_sim",
+    "query": "副卡有没有独立套餐价",
+    "relevant_ids": ["multi_sim"]
+  },
+  {
+    "id": "night_boost",
+    "query": "夜间会不会额外送流量",
+    "relevant_ids": ["night_boost"]
+  },
+  {
+    "id": "support_boundary",
+    "query": "内部员工套餐有没有折扣",
+    "relevant_ids": ["support_boundary"]
+  },
+  {
+    "id": "economy_intro",
+    "query": "经济套餐适合什么人",
+    "relevant_ids": ["economy_plan"]
+  },
+  {
+    "id": "changyou_intro",
+    "query": "畅游套餐包含多少流量",
+    "relevant_ids": ["changyou_plan"]
+  },
+  {
+    "id": "unlimited_meaning",
+    "query": "无限套餐是不是绝对不限量",
+    "relevant_ids": ["unlimited_plan"]
+  },
+  {
+    "id": "non_student_campus",
+    "query": "非在校生能不能办校园套餐",
+    "relevant_ids": ["campus_plan"]
+  },
+  {
+    "id": "prefer_upgrade",
+    "query": "长期超套应该怎么办",
+    "relevant_ids": ["overage_rule"]
+  },
+  {
+    "id": "no_undocumented_discount",
+    "query": "有没有未公示的亲情号折扣",
+    "relevant_ids": ["multi_sim", "support_boundary"]
+  },
+  {
+    "id": "billing_cycle",
+    "query": "流量是按自然月计费吗",
+    "relevant_ids": ["rollover_rule"]
+  }
+]
