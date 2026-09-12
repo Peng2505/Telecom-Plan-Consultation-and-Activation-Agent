@@ -1,4 +1,4 @@
-.env
+﻿.env
 chromaDB/
 output/*
 !output/.gitkeep
@@ -14,5 +14,7 @@ eval/last_retrieval_result.json
 eval/last_faithfulness_result.json
 eval/last_eval_summary.json
 eval/last_eval_summary_*.json
+eval/last_retrieval_*.json
+eval/last_faithfulness_*.json
 .DS_Store
 Thumbs.db
