@@ -18,3 +18,4 @@ eval/last_retrieval_*.json
 eval/last_faithfulness_*.json
 .DS_Store
 Thumbs.db
+graph.png

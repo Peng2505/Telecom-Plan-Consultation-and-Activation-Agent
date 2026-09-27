@@ -25,19 +25,79 @@ DB_URI 不要改成 Key。
 
 
 ==================================================
-二、按顺序启动（需要 2 个终端）
+二、一键部署（推荐：Postgres + API + Gradio 全在 Docker）
+==================================================
+
+前提：Docker Desktop 已运行；.env 已填 DASHSCOPE_API_KEY。
+
+cd D:\LangGraphChatBot-main\04_RagAgent
+docker compose up -d --build
+
+首次若本地还没有 chroma 集合，api 容器会自动跑 vectorSaveTest 灌库（需联网调 DashScope）。
+强制重新灌库：set RUN_INGEST=1 后再 compose up -d（或在 .env 写 RUN_INGEST=1）。
+
+起来后：
+- 接口：http://127.0.0.1:8012/health
+- 网页：http://127.0.0.1:7860
+
+查看日志：docker compose logs -f api
+停止：docker compose down
+（加 -v 会删掉 Postgres 数据卷，一般不要加）
+
+说明：会话状态在 Postgres（Checkpointer/Store）；LangSmith 仅做链路追踪（.env 填 LANGCHAIN_API_KEY）。
+
+--------------------------------------------------
+【验证一键部署是否成功】（本机已按此跑通）
+--------------------------------------------------
+
+1) 看三个容器是否都在跑：
+
+docker compose ps
+
+应看到 ragagent_postgres、ragagent_api、ragagent_web 为 running / healthy。
+
+2) 健康检查（PowerShell）：
+
+Invoke-WebRequest http://127.0.0.1:8012/health | Select-Object -ExpandProperty Content
+
+期望 JSON 里大致有：
+"status":"ok"
+"postgres":true
+"chroma_collection":true
+
+（chroma_collection 为 true 表示知识库已灌入；首次启动 api 可能自动灌库，需等一会再查。）
+
+3) 打开网页：
+
+http://127.0.0.1:7860
+
+注册/登录后发送：经济套餐多少钱？
+能正常回复（提到 50 元等）即前端 → API → 模型链路通。
+
+4)（可选）看日志确认无报错：
+
+docker compose logs --tail=80 api
+docker compose logs --tail=40 web
+
+全部通过即可认为「Docker 一键部署验证成功」。
+日常重启一般用：docker compose up -d
+（不必每次 --build；改 Dockerfile/requirements 时再加 --build）
+
+
+==================================================
+三、本机开发启动（需要 2 个终端；仅用 Docker 起数据库）
 ==================================================
 
 【终端 1】数据库 + 接口（这个窗口不要关）
 
 cd D:\LangGraphChatBot-main\04_RagAgent
 
-docker compose up -d
+docker compose up -d postgres
 
 D:\Anaconda\envs\langgraph\python.exe vectorSaveTest.py
 
 说明：知识库已经灌过的话，可以跳过 vectorSaveTest.py。
-改过 knowledge/data_plans.md 之后必须再跑一次灌库。
+改过 knowledge/data_plans_v2.md 之后必须再跑一次灌库。
 
 D:\Anaconda\envs\langgraph\python.exe main.py
 
@@ -61,7 +121,7 @@ D:\Anaconda\envs\langgraph\python.exe webUI.py
 
 
 ==================================================
-三、可选：评测
+四、可选：评测
 ==================================================
 
 再开一个终端：
@@ -100,7 +160,7 @@ curl -s http://127.0.0.1:8012/v1/bss/tickets/这里换成ticket_id
 
 
 ==================================================
-四、修改代码后怎么重启
+五、修改代码后怎么重启
 ==================================================
 
 - 只改了网页 webUI.py：终端 2 按 Ctrl+C，再执行 webUI.py。main.py 不用关。
@@ -109,19 +169,21 @@ curl -s http://127.0.0.1:8012/v1/bss/tickets/这里换成ticket_id
 
 
 ==================================================
-五、停止
+六、停止
 ==================================================
 
-1. 跑 webUI.py 的窗口：Ctrl+C
-2. 跑 main.py 的窗口：Ctrl+C
-3. 需要关掉数据库时（一般不用每次关）：
-
+一键部署模式：
 cd D:\LangGraphChatBot-main\04_RagAgent
 docker compose down
 
+本机开发模式：
+1. 跑 webUI.py 的窗口：Ctrl+C
+2. 跑 main.py 的窗口：Ctrl+C
+3. 需要关掉数据库时（一般不用每次关）：docker compose down
+
 
 ==================================================
-六、曾经踩过的坑（对照用）
+七、曾经踩过的坑（对照用）
 ==================================================
 
 - PowerShell 里 conda activate langgraph 会报 invalid choice: activate

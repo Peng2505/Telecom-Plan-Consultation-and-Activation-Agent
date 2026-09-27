@@ -31,12 +31,49 @@ copy .env.example .env
 
 编辑 `.env`，填入 `DASHSCOPE_API_KEY`。不要把真实 Key 提交到 Git。
 
-## 启动步骤
+## 一键部署（Docker Compose）
 
-1. Postgres（仅数据库，应用仍本机跑）：
+`.env` 填好 `DASHSCOPE_API_KEY` 后：
 
 ```bat
-docker compose up -d
+docker compose up -d --build
+```
+
+会启动 **Postgres + FastAPI(api) + Gradio(web)**。首次若本地 `chromaDB` 无集合，api 容器会自动灌库。
+
+- 健康检查：http://127.0.0.1:8012/health  
+- 网页：http://127.0.0.1:7860  
+- 日志：`docker compose logs -f api`  
+- 强制灌库：`set RUN_INGEST=1` 后重启 api  
+
+会话持久化靠 Postgres Checkpointer/Store；LangSmith 仅在配置 `LANGCHAIN_API_KEY` 时做链路追踪。
+
+### 验证是否启动成功
+
+本机按下列步骤验收通过后，即可认为一键部署可用：
+
+```bat
+docker compose ps
+```
+
+应看到 `ragagent_postgres` / `ragagent_api` / `ragagent_web` 为 running 或 healthy。
+
+```powershell
+Invoke-WebRequest http://127.0.0.1:8012/health | Select-Object -ExpandProperty Content
+```
+
+期望包含 `"status":"ok"`、`"postgres":true`，灌库完成后还有 `"chroma_collection":true`。
+
+再打开 http://127.0.0.1:7860 ，登录后问「经济套餐多少钱？」，能正常回复即端到端通过。
+
+日常重启：`docker compose up -d`（改镜像依赖时再加 `--build`）。
+
+## 本机开发启动
+
+1. 仅起数据库：
+
+```bat
+docker compose up -d postgres
 ```
 
 若本机 5432 已被占用，改 `docker-compose.yml` 端口，并同步改 `.env` 的 `DB_URI`。
@@ -71,7 +108,7 @@ python main.py
 python webUI.py
 ```
 
-若设置了 `APP_API_KEY`，Gradio 会自动带 `Authorization: Bearer ...`。
+`API_BASE_URL` 默认 `http://127.0.0.1:8012`。若设置了 `APP_API_KEY`，Gradio 会自动带 `Authorization: Bearer ...`。
 
 6. 评测（分层）：
 

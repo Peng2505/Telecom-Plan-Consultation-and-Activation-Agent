@@ -19,7 +19,8 @@ except ImportError:
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-url = "http://localhost:8012/v1/chat/completions"
+_api_base = os.getenv("API_BASE_URL", "http://127.0.0.1:8012").rstrip("/")
+url = f"{_api_base}/v1/chat/completions"
 headers = {"Content-Type": "application/json"}
 _app_key = os.getenv("APP_API_KEY", "").strip()
 if _app_key:
@@ -474,5 +475,7 @@ with gr.Blocks(title="聊天助手") as demo:
 
 # 如果当前脚本作为主程序运行，则启动 Gradio 应用
 if __name__ == "__main__":
-    # 启动 Gradio 应用，监听本地 7860 端口
-    demo.launch(server_name="127.0.0.1", server_port=7860, css=_PAGE_CSS)
+    server_name = os.getenv("GRADIO_SERVER_NAME", "0.0.0.0")
+    server_port = int(os.getenv("GRADIO_SERVER_PORT", "7860"))
+    logger.info(f"Gradio API_BASE_URL={_api_base} listen={server_name}:{server_port}")
+    demo.launch(server_name=server_name, server_port=server_port, css=_PAGE_CSS)
