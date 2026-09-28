@@ -3,12 +3,14 @@
 ## 说明
 
 - 脚本：`eval/run_ragas_eval.py`
-- 用例：`eval/ragas_cases.json`（14 条）
+- 用例：`eval/ragas_cases.json`（扩集后约 35 条）
 - 产物：`eval/last_ragas_result.json`、`eval/last_eval_timing.json`
 
 优先尝试官方 `ragas` 库；若与当前 LangChain 不兼容，自动回退为 **同定义的 LLM 评分**（Faithfulness / Answer Relevancy），并在结果 JSON 的 `backend` 字段标明 `llm_aligned_fallback`。
 
 LLM-as-Judge 始终运行：`score_1_to_5`、`policy_safe`、`pass`。
+
+权威数字见 `METRICS_AUTHORITY.md` §5。
 
 ## 回归耗时
 

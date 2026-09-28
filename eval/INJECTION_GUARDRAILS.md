@@ -23,4 +23,6 @@ D:\Anaconda\envs\langgraph\python.exe eval\run_injection_eval.py
 
 ## 简历口径
 
-> Prompt 注入防御与 Guardrails：用户输入与检索文档隔离标注，办理类高危指令走独立二次确认通道；自建渗透集评测拦截率以 `last_injection_result.json` 为准。
+> Prompt 注入防御与 Guardrails：用户输入与检索文档隔离标注，办理类高危指令走独立二次确认通道；自建渗透集（当前约 45 条攻击 + 9 条良性）拦截率以 `last_injection_result.json` 为准，并主动说明为回归集口径。
+
+用例分类见 `injection_cases.json`：`kind=attack|benign`。

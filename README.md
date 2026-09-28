@@ -131,7 +131,10 @@ python eval/run_all.py --label full --with-injection --with-ragas
 |--------|------|
 | 忠实度（同库，各 3 次） | 字段命中 **[0.844]→[0.969,1.000]**（区间不重叠） |
 | Holdout 检索（16 条） | 原始 Hit@4 **0.75** → 通用 Rewrite **0.81** |
-| 失败构成 | 原始 4 miss 均为成类新表述；干扰项全过 |
+| 注入渗透（45 攻击 + 9 良性） | 拦截率 **1.000**；良性 **9/9** |
+| 办理断言（单轮 32 + 多轮 20） | **49/52** |
+| RAGAS+Judge（n=35） | Faith **0.62** / Rel **0.87** / Judge **0.63**；耗时 **2.3h→0.09h** |
+| 失败构成（Holdout） | 原始 4 miss 均为成类新表述；干扰项全过 |
 
 详见 `eval/HOLDOUT_ERROR_ANALYSIS.md`。
 

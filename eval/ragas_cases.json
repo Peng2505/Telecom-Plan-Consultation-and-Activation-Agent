@@ -84,5 +84,134 @@
     "messages": ["校园套餐给谁用"],
     "context_mode": "retrieve",
     "retrieve_query": "校园套餐办理资格"
+  },
+  {
+    "id": "ragas_overage_cap",
+    "messages": ["超套费用有没有上限"],
+    "context_mode": "retrieve",
+    "retrieve_query": "超套计费与封顶"
+  },
+  {
+    "id": "ragas_refuse_undoc",
+    "messages": ["有没有不公开的折扣码"],
+    "context_mode": "retrieve",
+    "retrieve_query": "未文档化折扣需营业厅核实"
+  },
+  {
+    "id": "ragas_refuse_mnp",
+    "messages": ["携号转网赔偿怎么算"],
+    "context_mode": "retrieve",
+    "retrieve_query": "携号转网赔偿需营业厅核实"
+  },
+  {
+    "id": "ragas_multi_sim",
+    "messages": ["副卡能不能单独选独立月租"],
+    "context_mode": "retrieve",
+    "retrieve_query": "副卡共享流量无独立价"
+  },
+  {
+    "id": "ragas_unlimited_meaning",
+    "messages": ["无限套餐是不是完全不限量"],
+    "context_mode": "retrieve",
+    "retrieve_query": "无限套餐名称含义"
+  },
+  {
+    "id": "ragas_alias_changxiang",
+    "messages": ["畅享套餐是不是畅游"],
+    "context_mode": "retrieve",
+    "retrieve_query": "不存在畅享套餐"
+  },
+  {
+    "id": "ragas_alias_changxue",
+    "messages": ["校园畅学套餐月费多少"],
+    "context_mode": "retrieve",
+    "retrieve_query": "不存在校园畅学套餐"
+  },
+  {
+    "id": "ragas_recommend_heavy",
+    "messages": ["我不是学生", "每月大概用300G，推荐套餐"],
+    "context_mode": "tool_recommend",
+    "monthly_usage_gb": 300,
+    "campus_student": false
+  },
+  {
+    "id": "ragas_estimate_changyou",
+    "messages": ["我是畅游套餐，每月用120G，大概超多少钱"],
+    "context_mode": "tool_estimate",
+    "monthly_usage_gb": 120,
+    "current_plan": "畅游套餐"
+  },
+  {
+    "id": "ragas_economy_audience",
+    "messages": ["经济套餐适合什么场景"],
+    "context_mode": "retrieve",
+    "retrieve_query": "经济套餐适用场景"
+  },
+  {
+    "id": "ragas_changyou_audience",
+    "messages": ["畅游套餐适合什么人"],
+    "context_mode": "retrieve",
+    "retrieve_query": "畅游套餐适用场景"
+  },
+  {
+    "id": "ragas_campus_verify",
+    "messages": ["办校园套餐要什么材料"],
+    "context_mode": "retrieve",
+    "retrieve_query": "校园认证材料与生效"
+  },
+  {
+    "id": "ragas_campus_return",
+    "messages": ["校园套餐转出去还能转回来吗"],
+    "context_mode": "retrieve",
+    "retrieve_query": "校园套餐转出后不可转回"
+  },
+  {
+    "id": "ragas_billing_cycle",
+    "messages": ["流量按什么周期计费"],
+    "context_mode": "retrieve",
+    "retrieve_query": "流量按自然月计费"
+  },
+  {
+    "id": "ragas_prefer_upgrade",
+    "messages": ["老是超量是不是该换大套餐"],
+    "context_mode": "retrieve",
+    "retrieve_query": "超套优先升档建议"
+  },
+  {
+    "id": "ragas_official_names",
+    "messages": ["你们官方套餐一共有哪几档"],
+    "context_mode": "retrieve",
+    "retrieve_query": "官方套餐名称仅四档"
+  },
+  {
+    "id": "ragas_lookup_unlimited_fee",
+    "messages": ["无限套餐月费多少"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "无限套餐"
+  },
+  {
+    "id": "ragas_recommend_light",
+    "messages": ["我不是学生", "每月只用8G，推荐哪个"],
+    "context_mode": "tool_recommend",
+    "monthly_usage_gb": 8,
+    "campus_student": false
+  },
+  {
+    "id": "ragas_family_discount",
+    "messages": ["有没有未公示的亲情号折扣"],
+    "context_mode": "retrieve",
+    "retrieve_query": "无未公示亲情号折扣"
+  },
+  {
+    "id": "ragas_support_scope",
+    "messages": ["你能根据什么资料回答套餐问题"],
+    "context_mode": "retrieve",
+    "retrieve_query": "客服只答知识库与价表"
+  },
+  {
+    "id": "ragas_confirm_gate",
+    "messages": ["帮我马上办理畅游套餐"],
+    "context_mode": "retrieve",
+    "retrieve_query": "转套餐账期规则"
   }
 ]
