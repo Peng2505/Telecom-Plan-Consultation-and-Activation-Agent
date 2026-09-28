@@ -140,11 +140,22 @@ D:\Anaconda\envs\langgraph\python.exe eval\run_retrieval_eval.py
 
 D:\Anaconda\envs\langgraph\python.exe eval\run_all.py --label baseline
 
+注入渗透 + RAGAS/Judge（较慢，需 DashScope）：
+
+D:\Anaconda\envs\langgraph\python.exe eval\run_injection_eval.py
+D:\Anaconda\envs\langgraph\python.exe eval\run_ragas_eval.py
+
+或一并：
+
+D:\Anaconda\envs\langgraph\python.exe eval\run_all.py --label full --with-injection --with-ragas
+
 产物：
 - eval\last_retrieval_result.json（Hit@4 / MRR；与线上 RETRIEVAL_TOP_K=4 一致）
 - eval\last_faithfulness_result.json（字段命中率 / 数字幻觉率）
 - eval\last_result.json（单轮）
 - eval\last_conversation_result.json（多轮）
+- eval\last_injection_result.json（注入拦截率 interception_rate）
+- eval\last_ragas_result.json / last_eval_timing.json（Faithfulness、Relevancy、Judge、耗时）
 - eval\last_eval_summary_baseline.json（汇总）
 
 改进闭环说明见 eval\IMPROVEMENT_LOOP.md。

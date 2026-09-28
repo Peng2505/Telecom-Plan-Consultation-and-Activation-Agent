@@ -115,11 +115,14 @@ python webUI.py
 ```bat
 python eval/run_retrieval_eval.py
 python eval/run_all.py --label baseline
+python eval/run_all.py --label full --with-injection --with-ragas
 ```
 
 - 检索层（不需 API）：Hit Rate@K、MRR → `eval/last_retrieval_result.json`
 - 忠实度层（需 API）：字段命中率、数字幻觉率 → `eval/last_faithfulness_result.json`
 - 端到端：单轮 `eval/run_eval.py`、多轮 `eval/run_conversation_eval.py`
+- 注入防御：`eval/run_injection_eval.py` → `interception_rate`（见 `INJECTION_GUARDRAILS.md`）
+- RAGAS 对齐 + LLM-as-Judge：`eval/run_ragas_eval.py` → Faithfulness / Answer Relevancy / 回归耗时（见 `RAGAS_LLM_JUDGE.md`）
 - 改进闭环说明：`eval/IMPROVEMENT_LOOP.md`（baseline → 定位 → 单点修改 → 重跑对比）
 
 当前对外口径以 **`eval/METRICS_AUTHORITY.md`** 为准。

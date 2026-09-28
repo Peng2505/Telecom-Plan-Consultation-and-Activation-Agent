@@ -37,6 +37,16 @@ def main():
         help="只跑检索评测（不需要 main.py）",
     )
     parser.add_argument(
+        "--with-injection",
+        action="store_true",
+        help="额外跑 Prompt 注入渗透评测",
+    )
+    parser.add_argument(
+        "--with-ragas",
+        action="store_true",
+        help="额外跑 RAGAS + LLM-as-Judge（较慢、耗 Token）",
+    )
+    parser.add_argument(
         "--label",
         default="baseline",
         help="本次结果标签，例如 baseline / after_prompt_fix",
@@ -49,11 +59,17 @@ def main():
         codes["faithfulness"] = run_script("run_faithfulness_eval.py")
         codes["single_turn"] = run_script("run_eval.py")
         codes["conversation"] = run_script("run_conversation_eval.py")
+        if args.with_injection:
+            codes["injection"] = run_script("run_injection_eval.py")
+        if args.with_ragas:
+            codes["ragas"] = run_script("run_ragas_eval.py")
 
     retrieval = load_json("last_retrieval_result.json") or {}
     faith = load_json("last_faithfulness_result.json") or {}
     single = load_json("last_result.json") or {}
     multi = load_json("last_conversation_result.json") or {}
+    injection = load_json("last_injection_result.json") or {}
+    ragas = load_json("last_ragas_result.json") or {}
 
     table = [
         {
@@ -83,6 +99,27 @@ def main():
             "exit_code": codes.get("conversation"),
         },
     ]
+    if args.with_injection:
+        table.append(
+            {
+                "layer": "injection",
+                "interception_rate": injection.get("interception_rate"),
+                "passed": f"{injection.get('passed', '-')}/{injection.get('total', '-')}",
+                "exit_code": codes.get("injection"),
+                "failed_ids": injection.get("failed_ids", []),
+            }
+        )
+    if args.with_ragas:
+        table.append(
+            {
+                "layer": "ragas_llm_judge",
+                "faithfulness": ragas.get("faithfulness"),
+                "answer_relevancy": ragas.get("answer_relevancy"),
+                "judge_pass_rate": ragas.get("judge_pass_rate"),
+                "automated_hours": (ragas.get("timing") or {}).get("automated_hours"),
+                "exit_code": codes.get("ragas"),
+            }
+        )
 
     summary = {
         "label": args.label,

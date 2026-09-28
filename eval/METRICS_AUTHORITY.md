@@ -1,6 +1,6 @@
 # 评测指标权威表（对外口径以此为准）
 
-> 最后更新：2026-09-13  
+> 最后更新：2026-09-28  
 > 路径：`04_RagAgent/eval/`  
 > **禁止**把「定位集上调参后的满分」或「未标注环境的两个忠实度数字」混写成一句结论。
 
@@ -54,11 +54,42 @@
 
 不要再把早期「粗库单次 0.969」与「细库连跑下限」并成一句不解释。
 
-## 4. 简历推荐表述（与上表一致）
+## 4. Prompt 注入拦截率（2026-09-28 实测）
+
+| 项 | 值 |
+|----|-----|
+| 攻击用例 | 16 |
+| 拦截 | **16/16** |
+| **interception_rate** | **1.000** |
+| 良性对照 | 2/2 通过（问价/推荐未误杀） |
+| 产物 | `last_injection_result.json` |
+
+实现：提示词隔离标注 + 检索/工具包装 + 办理硬通道拒注入（`INJECTION_GUARDRAILS.md` / `utils/guardrails.py`）。
+
+## 5. RAGAS 对齐 + LLM-as-Judge + 回归耗时（2026-09-28 实测）
+
+| 项 | 值 |
+|----|-----|
+| 用例 n | 14（`ragas_cases.json`） |
+| backend | `llm_aligned_fallback`（ragas 0.4.3 与当前 LangChain 导入冲突，指标定义对齐 RAGAS） |
+| **faithfulness** | **0.714** |
+| **answer_relevancy** | **0.900** |
+| **judge_pass_rate** | **0.571** |
+| 手工估算耗时 | **0.93 h**（14×4min） |
+| 自动墙钟 | **0.036 h**（约 2.2 min） |
+| 产物 | `last_ragas_result.json` / `last_eval_timing.json` |
+
+与 rules 忠实度（must_include/forbid）**并列**，不互相替换。Judge 更严（含业务安全），故 pass rate 可低于 Answer Relevancy。
+
+## 6. 简历推荐表述（与上表一致）
 
 > 自建分层评测（holdout 检索 + 工具忠实度）。强化 agent 提示词后，字段命中率由 **0.844** 提升至 **0.97～1.00**（各连跑 3 次，区间不重叠）。政策库 31 chunk、Top-4；Query Rewrite 为对象-动作-条件通用归一化。Holdout（16 条）原始 Hit@4=**0.75**，通用改写后 **0.81**；失败均为成类新表述，干扰项未拖累。
 
-## 5. 复现命令
+> Prompt 注入防御与 Guardrails：用户输入与检索文档隔离标注，办理高危指令走独立二次确认通道；自建渗透集（16 条攻击）拦截率 **100%**，良性问价/推荐 2/2 未误杀。
+
+> 引入 RAGAS 对齐的 Faithfulness / Answer Relevancy（实测 **0.71 / 0.90**）与 LLM-as-Judge 自动回归；同类 14 条用例回归耗时由手工估算约 **0.93h** 降至自动约 **0.04h**。
+
+## 7. 复现命令
 
 ```bat
 cd /d d:\LangGraphChatBot-main\04_RagAgent
@@ -70,10 +101,16 @@ python eval\run_retrieval_eval.py --cases retrieval_cases_holdout.json --with-re
 
 REM 忠实度区间：先 baseline_legacy agent，再 strong agent，各：
 python eval\run_faithfulness_range.py 3
+
+REM 注入 + RAGAS（需 API）
+python eval\run_injection_eval.py
+python eval\run_ragas_eval.py
+REM 或：python eval\run_all.py --label full --with-injection --with-ragas
 ```
 
-## 6. 相关文件
+## 8. 相关文件
 
-- `CHANGELOG.md` / `HOLDOUT_ERROR_ANALYSIS.md`  
+- `CHANGELOG.md` / `HOLDOUT_ERROR_ANALYSIS.md` / `INJECTION_GUARDRAILS.md` / `RAGAS_LLM_JUDGE.md`
 - `prompt_template_rewrite_generic.txt` / `prompt_template_rewrite_special_legacy.txt`  
 - `prompt_template_agent_strong.txt` / `prompt_template_agent_baseline_legacy.txt`
+- `utils/guardrails.py`

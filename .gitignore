@@ -16,6 +16,9 @@ eval/last_eval_summary.json
 eval/last_eval_summary_*.json
 eval/last_retrieval_*.json
 eval/last_faithfulness_*.json
+eval/last_injection_*.json
+eval/last_ragas_*.json
+eval/last_eval_timing.json
 .DS_Store
 Thumbs.db
 graph.png

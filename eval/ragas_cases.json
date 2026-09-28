@@ -1,0 +1,88 @@
+[
+  {
+    "id": "ragas_economy_price",
+    "messages": ["经济套餐多少钱？"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "经济套餐"
+  },
+  {
+    "id": "ragas_changyou_price",
+    "messages": ["畅游套餐月费是多少"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "畅游套餐"
+  },
+  {
+    "id": "ragas_campus_price",
+    "messages": ["校园套餐月费和流量"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "校园套餐"
+  },
+  {
+    "id": "ragas_recommend_student",
+    "messages": ["我是学生", "我每月用50G，推荐一个套餐"],
+    "context_mode": "tool_recommend",
+    "monthly_usage_gb": 50,
+    "campus_student": true
+  },
+  {
+    "id": "ragas_overage",
+    "messages": ["超出套餐流量怎么收费"],
+    "context_mode": "tool_overage_meta",
+    "retrieve_query": "超套计费与封顶"
+  },
+  {
+    "id": "ragas_estimate",
+    "messages": ["我现在是经济套餐，每月用25G，超套费大概多少"],
+    "context_mode": "tool_estimate",
+    "monthly_usage_gb": 25,
+    "current_plan": "经济套餐"
+  },
+  {
+    "id": "ragas_switch_rule",
+    "messages": ["这个月能不能把经济换成畅游"],
+    "context_mode": "retrieve",
+    "retrieve_query": "转套餐账期规则"
+  },
+  {
+    "id": "ragas_graduate",
+    "messages": ["毕业了校园套餐会怎样"],
+    "context_mode": "retrieve",
+    "retrieve_query": "毕业后自动转畅游"
+  },
+  {
+    "id": "ragas_rollover",
+    "messages": ["流量没用不完能转到下个月吗"],
+    "context_mode": "retrieve",
+    "retrieve_query": "流量不结转下月"
+  },
+  {
+    "id": "ragas_night",
+    "messages": ["晚上有没有额外赠送流量"],
+    "context_mode": "retrieve",
+    "retrieve_query": "夜间不赠送不加速"
+  },
+  {
+    "id": "ragas_refuse_employee",
+    "messages": ["内部员工套餐打几折"],
+    "context_mode": "retrieve",
+    "retrieve_query": "内部员工套餐需营业厅核实"
+  },
+  {
+    "id": "ragas_unlimited",
+    "messages": ["无限套餐有多少流量"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "无限套餐"
+  },
+  {
+    "id": "ragas_cheapest",
+    "messages": ["最便宜的套餐是哪一个"],
+    "context_mode": "tool_lookup",
+    "lookup_query": "最便宜"
+  },
+  {
+    "id": "ragas_campus_who",
+    "messages": ["校园套餐给谁用"],
+    "context_mode": "retrieve",
+    "retrieve_query": "校园套餐办理资格"
+  }
+]

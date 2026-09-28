@@ -19,3 +19,6 @@ tenacity==9.1.4
 concurrent-log-handler==0.9.29
 pydantic==2.13.4
 typing-extensions==4.16.0
+# RAGAS：环境若与 LangChain 冲突，eval/run_ragas_eval.py 会自动回退到同定义 LLM 评分
+ragas==0.4.3
+datasets>=2.14.0

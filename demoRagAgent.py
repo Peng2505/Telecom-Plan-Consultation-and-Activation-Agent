@@ -50,6 +50,7 @@ from utils.llms import get_llm
 from utils.tools_config import get_tools
 # 导入统一的 Config 类
 from utils.config import Config
+from utils.guardrails import injection_refusal_message, looks_like_prompt_injection
 from utils.plans import PLANS, _normalize_plan_name
 
 os.makedirs(os.path.dirname(Config.LOG_FILE), exist_ok=True)
@@ -337,10 +338,21 @@ def _profile_text(profile: dict) -> str:
     )
 
 
+def _strip_tool_wrappers(context: str) -> str:
+    """去掉 <<<TOOL_JSON>>> / 文档包装，便于解析权威 JSON。"""
+    text = (context or "").strip()
+    if "<<<TOOL_JSON" in text:
+        start = text.find(">>>")
+        end = text.rfind("<<<END_TOOL>>>")
+        if start != -1 and end != -1 and end > start:
+            return text[start + 3 : end].strip()
+    return text
+
+
 def _tool_profile_updates(context: str) -> dict:
     """从权威工具 JSON 中回写推荐/选择的套餐。"""
     try:
-        payload = json.loads(context)
+        payload = json.loads(_strip_tool_wrappers(context))
     except (TypeError, json.JSONDecodeError):
         return {}
     plan = payload.get("recommended_plan") or payload.get("plan")
@@ -362,6 +374,8 @@ def _is_order_request(text: str) -> bool:
     normalized = text.strip()
     if _is_progress_request(normalized):
         return False
+    if looks_like_prompt_injection(normalized):
+        return False
     return (
         normalized in {"需要", "要", "开通", "办理", "下单", "确认", "确认办理", "确定"}
         or any(word in normalized for word in ("办理", "开通", "下单"))
@@ -370,7 +384,28 @@ def _is_order_request(text: str) -> bool:
 
 def _is_order_confirmation(text: str) -> bool:
     normalized = text.strip()
+    # 注入话术夹带「确认办理」时不视为有效确认
+    if looks_like_prompt_injection(normalized):
+        return False
     return normalized in {"确认", "确认办理", "确定", "开通", "办理", "同意"} or "确认办理" in normalized
+
+
+def _strip_create_order_tool_calls(response):
+    """防止模型在注入场景下私自调用 create_order。"""
+    tool_calls = getattr(response, "tool_calls", None) or []
+    if not tool_calls:
+        return response
+    kept = [tc for tc in tool_calls if (tc.get("name") if isinstance(tc, dict) else getattr(tc, "name", "")) != "create_order"]
+    if len(kept) == len(tool_calls):
+        return response
+    logger.warning("Stripped unauthorized create_order tool_calls from agent response")
+    if hasattr(response, "model_copy"):
+        return response.model_copy(update={"tool_calls": kept})
+    try:
+        response.tool_calls = kept
+    except Exception:
+        pass
+    return response
 
 
 # 定义跨线程的持久化存储的存储和过滤函数
@@ -517,6 +552,21 @@ def agent(state: MessagesState, config: RunnableConfig, *, store: BaseStore, llm
         # 自定义线程内存储逻辑 过滤消息
         messages = filter_messages(state["messages"])
 
+        if looks_like_prompt_injection(question_text):
+            # 注入场景：不走开通硬通道，不让模型私自 create_order
+            if profile["order_confirmation_pending"] and any(
+                word in question_text for word in ("取消", "不办了", "算了")
+            ):
+                return {
+                    "messages": [AIMessage(content="已取消本次办理申请，不会生成工单。")],
+                    **profile_updates,
+                    "order_confirmation_pending": False,
+                }
+            return {
+                "messages": [AIMessage(content=injection_refusal_message())],
+                **profile_updates,
+            }
+
         if profile["order_confirmation_pending"] and any(
             word in question_text for word in ("取消", "不办了", "算了")
         ):
@@ -587,6 +637,7 @@ def agent(state: MessagesState, config: RunnableConfig, *, store: BaseStore, llm
                 "user_profile": _profile_text(profile),
             }
         )
+        response = _strip_create_order_tool_calls(response)
         # logger.info(f"Agent response: {response}")
         # 返回更新后的对话状态
         return {"messages": [response], **profile_updates}
