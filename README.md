@@ -1,6 +1,6 @@
 # 流量包推荐 LangGraph Agent
 
-基于开源教程 [LangGraphChatBot](https://github.com/NanGePlus) 第四期 **二次开发**：业务改为流量套餐推荐，模型改为通义千问（环境变量），并补上健康检查、业务对话接口与关键字评测。
+流量套餐推荐，模型改为通义千问（环境变量），并补上健康检查、业务对话接口与关键字评测。
 
 知识检索走 **Chroma**（不是 pgvector）；PostgreSQL 只做会话检查点与长期记忆。
 
